@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mickylab.controller.dto.UserDTO;
 import com.mickylab.mapper.UserMapper;
-import com.mickylab.pojo.User;
+import com.mickylab.entity.User;
 import com.mickylab.service.IUserService;
 import org.springframework.stereotype.Service;
 
@@ -17,16 +17,13 @@ import org.springframework.stereotype.Service;
  * @since 2022-05-01
  */
 @Service
-public class UserService extends ServiceImpl<UserMapper, User> implements IUserService {
-    public boolean saveUser(User user) {
-        return saveOrUpdate(user); // mybatis-plus提供的方法
-    }
+public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IUserService {
 
     public boolean login(UserDTO userDTO) {
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("username", userDTO.getUsername());
         queryWrapper.eq("password", userDTO.getPassword());
-
-        return false;
+        User one = getOne(queryWrapper);
+        return one != null;
     }
 }

@@ -8,10 +8,6 @@ spring:
     url: jdbc:mysql://localhost:3306/bms_app?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&useSSL=true
     driver-class-name: com.mysql.cj.jdbc.Driver
 
-  # swagger-ui custom path
-  springdoc:
-    swagger-ui: path=/swagger-ui.html
-
 # 整合mybatis
 #mybatis:
 #  mapper-locations: classpath:mybatis/mapper/*.xml
@@ -21,4 +17,6 @@ mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
-# swagger-ui custom path
+# it works
+springdoc:
+  swagger-ui: path=/swagger-ui.html

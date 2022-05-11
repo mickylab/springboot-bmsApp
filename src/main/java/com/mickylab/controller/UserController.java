@@ -1,13 +1,15 @@
 package com.mickylab.controller;
 
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.poi.excel.ExcelReader;
 import cn.hutool.poi.excel.ExcelUtil;
 import cn.hutool.poi.excel.ExcelWriter;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.mickylab.pojo.User;
-import com.mickylab.service.UserService;
+import com.mickylab.controller.dto.UserDTO;
+import com.mickylab.entity.User;
+import com.mickylab.service.impl.UserServiceImpl;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,39 +24,48 @@ import java.util.List;
 @RequestMapping("/user")
 public class UserController {
 
-    private final UserService userService;
-    public UserController(UserService userService) {
-        this.userService = userService;
+    private final UserServiceImpl userServiceImpl;
+    public UserController(UserServiceImpl userServiceImpl) {
+        this.userServiceImpl = userServiceImpl;
+    }
+
+    // 用户登录
+    @PostMapping("/login")
+    public boolean login(@RequestBody UserDTO userDTO) {
+        String username = userDTO.getUsername();
+        String password = userDTO.getPassword();
+        if (StrUtil.isBlank(username) || StrUtil.isBlank(password)) return false;
+        return userServiceImpl.login(userDTO);
     }
 
     // 新增和修改
     @PostMapping
     public boolean save(@RequestBody User user) {
         // 新增或更新
-        return userService.saveUser(user);
+        return userServiceImpl.saveOrUpdate(user);
     }
 
     // 查询所有
     @GetMapping
     public List<User> findAll() {
-        return userService.list();
+        return userServiceImpl.list();
     }
 
     @GetMapping("/{id}")
     public User findById(@PathVariable Integer id) {
-        return userService.getById(id);
+        return userServiceImpl.getById(id);
     }
 
     // 删除
     @DeleteMapping("/{id}")
     public boolean delete(@PathVariable Integer id) {
-        return userService.removeById(id);
+        return userServiceImpl.removeById(id);
     }
 
     // 批量删除
     @PostMapping("/del/batch")
     public boolean batchDelete(@RequestBody List<Integer> ids) {
-        return userService.removeByIds(ids);
+        return userServiceImpl.removeByIds(ids);
     }
 
     // 分页查询 - mybatis-plus方式
@@ -72,14 +83,14 @@ public class UserController {
         // 默认是AND, 使用OR: queryWrapper.or().like("email", email);
         // defaultValue = "" 加上这个参数不传不报400
         queryWrapper.orderByDesc("create_time");
-        return userService.page(page, queryWrapper);
+        return userServiceImpl.page(page, queryWrapper);
     }
 
     // 导出接口
     @GetMapping("/export")
     public void export(HttpServletResponse response) throws Exception {
         // 从数据库查出所有数据
-        List<User> list = userService.list();
+        List<User> list = userServiceImpl.list();
         // 在内存操作, 直接写出到浏览器
         ExcelWriter writer = ExcelUtil.getWriter(true);
         // 一次性写出list内的对象到excel,使用默认样式, 强制输出标题
@@ -101,7 +112,7 @@ public class UserController {
         InputStream inputStream = file.getInputStream();
         ExcelReader reader = ExcelUtil.getReader(inputStream);
         List<User> userList = reader.readAll(User.class);
-        userService.saveBatch(userList);
+        userServiceImpl.saveBatch(userList);
         return true;
     }
 }
