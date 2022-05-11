@@ -29,7 +29,7 @@ public class Result {
     }
 
     public static Result error() {
-        return new Result(Constants.CODE_500, "系统错误", null);
+        return new Result(Constants.CODE_500, "System Error", null);
     }
 
 }

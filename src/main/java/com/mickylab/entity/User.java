@@ -9,6 +9,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.Date;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -26,6 +28,8 @@ public class User {
     private String email;
     private String phone;
     private String address;
+    private Date createTime;
+    private String avatarUrl;
     // 数据库别名 @TableField(value = "")
     // mybatis-plus自动包含驼峰转换
 

@@ -41,14 +41,14 @@ export default {
       this.$refs["userForm"].validate((valid) => {
         if (valid) { // 表单校验是否合法, 表单数据合法的时候发送请求, 不合法时点击login也不发送请求
           this.request.post("/user/login", this.user).then(res => {
-            if (!res) {
-              this.$message.error("Either the username or password is invalid!")
-            } else {
+            if (res.code === "200") {
+              localStorage.setItem("user", JSON.stringify(res.data)) // 存储用户信息到浏览器
               this.$router.push("/")
+              this.$message.success("Login in successfully")
+            } else {
+              this.$message.error(res.msg)
             }
           })
-        } else {
-          return false;
         }
       });
     }

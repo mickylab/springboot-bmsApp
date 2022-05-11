@@ -7,6 +7,8 @@ import cn.hutool.poi.excel.ExcelWriter;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.mickylab.common.Constants;
+import com.mickylab.common.Result;
 import com.mickylab.controller.dto.UserDTO;
 import com.mickylab.entity.User;
 import com.mickylab.service.impl.UserServiceImpl;
@@ -31,11 +33,14 @@ public class UserController {
 
     // 用户登录
     @PostMapping("/login")
-    public boolean login(@RequestBody UserDTO userDTO) {
+    public Result login(@RequestBody UserDTO userDTO) {
         String username = userDTO.getUsername();
         String password = userDTO.getPassword();
-        if (StrUtil.isBlank(username) || StrUtil.isBlank(password)) return false;
-        return userServiceImpl.login(userDTO);
+        if (StrUtil.isBlank(username) || StrUtil.isBlank(password)) {
+            return Result.error(Constants.CODE_400, "参数错误");
+        }
+        UserDTO dto = userServiceImpl.login(userDTO);
+        return Result.success(dto);
     }
 
     // 新增和修改

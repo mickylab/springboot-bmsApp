@@ -14,6 +14,6 @@ import com.mickylab.entity.User;
  */
 public interface IUserService extends IService<User> {
 
-    boolean login(UserDTO userDTO);
+    UserDTO login(UserDTO userDTO);
 
 }
