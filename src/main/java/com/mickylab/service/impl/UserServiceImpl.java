@@ -8,6 +8,8 @@ import com.mickylab.entity.User;
 import com.mickylab.service.IUserService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * <p>
  *  服务实现类
@@ -19,11 +21,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IUserService {
 
+    // private static final Log log = Log.get();
+
     public boolean login(UserDTO userDTO) {
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("username", userDTO.getUsername());
         queryWrapper.eq("password", userDTO.getPassword());
-        User one = getOne(queryWrapper);
-        return one != null;
+        List<User> list = list(queryWrapper);
+        return list.size() != 0;
     }
 }

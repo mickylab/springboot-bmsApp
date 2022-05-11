@@ -38,13 +38,19 @@ export default {
   },
   methods: {
     login() {
-      this.request.post("/user/login", this.user).then(res => {
-        if (!res) {
-          this.$message.error("Either the username or password is invalid!")
+      this.$refs["userForm"].validate((valid) => {
+        if (valid) { // 表单校验是否合法, 表单数据合法的时候发送请求, 不合法时点击login也不发送请求
+          this.request.post("/user/login", this.user).then(res => {
+            if (!res) {
+              this.$message.error("Either the username or password is invalid!")
+            } else {
+              this.$router.push("/")
+            }
+          })
         } else {
-          this.$router.push("/")
+          return false;
         }
-      })
+      });
     }
   }
 }
