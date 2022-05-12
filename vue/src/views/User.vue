@@ -133,14 +133,14 @@ export default {
           address: this.address,
         }
       }).then(res => {
-        this.tableData = res.records;
-        this.total = res.total;
+        this.tableData = res.data.records;
+        this.total = res.data.total;
       })
     },
     // 保存提交的表单数据
     save() {
       this.request.post("/user", this.form).then(res => {
-        if (res) {
+        if (res.data) {
           this.$message.success("Save successfully!")
           this.dialogFormVisible = false
           this.load()
@@ -161,7 +161,7 @@ export default {
     // 删除
     del(id) {
       this.request.delete("/user/" + id).then(res => {
-        if (res) {
+        if (res.data) {
           this.$message.success("Delete successfully!")
           this.load()
         }
@@ -176,7 +176,7 @@ export default {
     batchDelete() {
       let ids = this.multipleSelection.map(v => v.id)
       this.request.post("/user/del/batch", ids).then(res => {
-        if (res) {
+        if (res.data) {
           this.$message.success("Batch delete successfully!")
           this.load()
         }

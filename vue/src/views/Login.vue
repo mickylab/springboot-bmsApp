@@ -11,7 +11,7 @@
         </el-form-item>
         <div style="margin: 10px 0; text-align: right">
           <el-button type="primary" size="medium" autocomplete="off" @click="login">Log In</el-button>
-          <el-button type="warning" size="medium" autocomplete="off">Sign Up</el-button>
+          <el-button type="warning" size="medium" autocomplete="off" @click="$router.push('/signup')">Sign Up</el-button>
         </div>
       </el-form>
     </div>
@@ -43,8 +43,8 @@ export default {
           this.request.post("/user/login", this.user).then(res => {
             if (res.code === "200") {
               localStorage.setItem("user", JSON.stringify(res.data)) // 存储用户信息到浏览器
-              this.$router.push("/")
-              this.$message.success("Login in successfully")
+              this.$router.push('/')
+              this.$message.success("Log in successfully")
             } else {
               this.$message.error(res.msg)
             }

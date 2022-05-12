@@ -43,39 +43,58 @@ public class UserController {
         return Result.success(dto);
     }
 
+    // 用户注册
+    @PostMapping("/signup")
+    public Result signup(@RequestBody UserDTO userDTO) {
+        String username = userDTO.getUsername();
+        String password = userDTO.getPassword();
+        if (StrUtil.isBlank(username) || StrUtil.isBlank(password)) {
+            return Result.error(Constants.CODE_400, "参数错误");
+        }
+        return Result.success(userServiceImpl.signup(userDTO));
+    }
+
+    // 用户名查询
+    @GetMapping("/username/{username}")
+    public Result findByUsername(@PathVariable String username) {
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("username", username);
+        return Result.success(userServiceImpl.getOne(queryWrapper));
+    }
+
     // 新增和修改
     @PostMapping
-    public boolean save(@RequestBody User user) {
+    public Result save(@RequestBody User user) {
         // 新增或更新
-        return userServiceImpl.saveOrUpdate(user);
+        return Result.success(userServiceImpl.saveOrUpdate(user));
     }
 
     // 查询所有
     @GetMapping
-    public List<User> findAll() {
-        return userServiceImpl.list();
+    public Result findAll() {
+        return Result.success(userServiceImpl.list());
     }
 
     @GetMapping("/{id}")
-    public User findById(@PathVariable Integer id) {
-        return userServiceImpl.getById(id);
+    public Result findById(@PathVariable Integer id) {
+        return Result.success(userServiceImpl.getById(id));
     }
 
     // 删除
     @DeleteMapping("/{id}")
-    public boolean delete(@PathVariable Integer id) {
-        return userServiceImpl.removeById(id);
+    public Result delete(@PathVariable Integer id) {
+        return Result.success(userServiceImpl.removeById(id));
     }
 
     // 批量删除
     @PostMapping("/del/batch")
-    public boolean batchDelete(@RequestBody List<Integer> ids) {
-        return userServiceImpl.removeByIds(ids);
+    public Result batchDelete(@RequestBody List<Integer> ids) {
+        return Result.success(userServiceImpl.removeByIds(ids));
     }
 
     // 分页查询 - mybatis-plus方式
     @GetMapping("/page")
-    public IPage<User> findPage(@RequestParam Integer pageNum,
+    public Result findPage(@RequestParam Integer pageNum,
                                 @RequestParam Integer pageSize,
                                 @RequestParam(defaultValue = "") String username,
                                 @RequestParam(defaultValue = "") String email,
@@ -88,7 +107,7 @@ public class UserController {
         // 默认是AND, 使用OR: queryWrapper.or().like("email", email);
         // defaultValue = "" 加上这个参数不传不报400
         queryWrapper.orderByDesc("create_time");
-        return userServiceImpl.page(page, queryWrapper);
+        return Result.success(userServiceImpl.page(page, queryWrapper));
     }
 
     // 导出接口
@@ -113,11 +132,11 @@ public class UserController {
 
     // 导入接口
     @PostMapping("/import")
-    public Boolean importFromExcel(MultipartFile file) throws Exception {
+    public Result importFromExcel(MultipartFile file) throws Exception {
         InputStream inputStream = file.getInputStream();
         ExcelReader reader = ExcelUtil.getReader(inputStream);
         List<User> userList = reader.readAll(User.class);
         userServiceImpl.saveBatch(userList);
-        return true;
+        return Result.success(true);
     }
 }
