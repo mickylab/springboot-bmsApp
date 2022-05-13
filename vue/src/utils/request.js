@@ -1,4 +1,5 @@
 import axios from 'axios'
+import router from "@/router";
 
 const request = axios.create({
     baseURL: 'http://localhost:9090',  // 注意！！ 这里是全局统一加上了 后端接口前缀 前缀，后端必须进行跨域配置！
@@ -10,7 +11,8 @@ const request = axios.create({
 // 比如统一加token，对请求参数统一加密
 request.interceptors.request.use(config => {
     config.headers['Content-Type'] = 'application/json;charset=utf-8';
-    // config.headers['token'] = user.token;  // 设置请求头
+    let user = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : null;
+    if (user) config.headers['token'] = user.token;  // 设置请求头
     return config
 }, error => {
     return Promise.reject(error)
@@ -28,6 +30,9 @@ request.interceptors.response.use(
         // 兼容服务端返回的字符串数据
         if (typeof res === 'string') {
             res = res ? JSON.parse(res) : res
+        }
+        if (res.code === '401') {
+            router.push('/login').then()
         }
         return res;
     },

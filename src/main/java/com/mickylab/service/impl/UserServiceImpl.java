@@ -10,6 +10,7 @@ import com.mickylab.exception.ServiceException;
 import com.mickylab.mapper.UserMapper;
 import com.mickylab.entity.User;
 import com.mickylab.service.IUserService;
+import com.mickylab.utils.TokenUtils;
 import org.springframework.stereotype.Service;
 
 /**
@@ -29,6 +30,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         User one = getUserInfo(userDTO);
         if (one != null) {
             BeanUtil.copyProperties(one, userDTO, true);
+            // 设置token
+            String token = TokenUtils.getToken(one.getId().toString(), one.getPassword());
+            userDTO.setToken(token);
             return userDTO;
         } else {
             throw new ServiceException(Constants.CODE_600, "Either the username or password is invalid!");
