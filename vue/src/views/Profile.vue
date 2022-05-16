@@ -7,7 +7,7 @@
           :show-file-list="false"
           :on-success="handleAvatarSuccess"
       >
-        <img v-if="form.avatarUrl" :src="form.avatarUrl" class="avatar">
+        <img v-if="form.avatarUrl" :src="form.avatarUrl" class="avatar" alt="">
         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
       </el-upload>
 
@@ -34,10 +34,13 @@
 </template>
 
 <script>
+import {serverIp} from "../../public/config";
+
 export default {
   name: "Profile",
   data() {
     return {
+      serverIp: serverIp,
       form: {},
       user: localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : {},
     }
@@ -54,11 +57,20 @@ export default {
     },
     save() {
       this.request.post("/user", this.form).then(res => {
-        if (res.data) {
+        if (res.code === '200') {
           this.$message.success("Save successfully!")
+
+          // 更新浏览器存储的用户信息
+          this.getUser().then(res => {
+            res.token = JSON.parse(localStorage.getItem("user")).token
+            localStorage.setItem("user", JSON.stringify(res))
+          })
         }
         else this.$message.error("Save failed!")
       })
+    },
+    handleAvatarSuccess(res) {
+      this.form.avatarUrl = res
     },
   }
 }
@@ -69,16 +81,7 @@ export default {
   text-align: center;
   padding-bottom: 10px;
 }
-.avatar-uploader .el-upload {
-  border: 1px dashed #d9d9d9;
-  border-radius: 6px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-}
-.avatar-uploader .el-upload:hover {
-  border-color: #409EFF;
-}
+
 .avatar-uploader-icon {
   font-size: 28px;
   color: #8c939d;

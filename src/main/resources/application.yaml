@@ -1,4 +1,5 @@
 server:
+  ip: localhost
   port: 9090
 
 spring:
@@ -20,3 +21,7 @@ mybatis-plus:
 # it works
 springdoc:
   swagger-ui: path=/swagger-ui.html
+
+files:
+  upload:
+    path: /Users/micky3k/Documents/GitHub/springboot-bmsApp/files/

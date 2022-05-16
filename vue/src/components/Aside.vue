@@ -40,15 +40,13 @@
         <span slot="title">Setting</span>
       </template>
       <el-menu-item index="/user">
+        <i class="el-icon-s-custom"></i>
         <template slot="title">User Setting</template>
       </el-menu-item>
-      <el-menu-item-group title="Group 2">
-        <el-menu-item index="3-3">Option 3</el-menu-item>
-      </el-menu-item-group>
-      <el-submenu index="3-4">
-        <template slot="title">Option 4</template>
-        <el-menu-item index="3-4-1">Option 4-1</el-menu-item>
-      </el-submenu>
+      <el-menu-item index="/file">
+        <i class="el-icon-document"></i>
+        <template slot="title">File Setting</template>
+      </el-menu-item>
     </el-submenu>
   </el-menu>
 </template>

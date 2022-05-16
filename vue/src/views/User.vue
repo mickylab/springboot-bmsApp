@@ -99,6 +99,8 @@
 </template>
 
 <script>
+import {serverIp} from "../../public/config";
+
 export default {
   name: "User",
   data() {
@@ -140,7 +142,7 @@ export default {
     // 保存提交的表单数据
     save() {
       this.request.post("/user", this.form).then(res => {
-        if (res.data) {
+        if (res.code === '200') {
           this.$message.success("Save successfully!")
           this.dialogFormVisible = false
           this.load()
@@ -155,13 +157,13 @@ export default {
     },
     // 编辑
     handleEdit(row) {
-      this.form = Object.assign({}, row)
+      this.form = JSON.parse(JSON.stringify(row))
       this.dialogFormVisible = true
     },
     // 删除
     del(id) {
       this.request.delete("/user/" + id).then(res => {
-        if (res.data) {
+        if (res.code === '200') {
           this.$message.success("Delete successfully!")
           this.load()
         }
@@ -174,7 +176,7 @@ export default {
     },
     // 批量删除
     batchDelete() {
-      let ids = this.multipleSelection.map(v => v.id)
+      let ids = this.multipleSelection.map(v => v.id) // [{}, {}, {}] => [1,2,3]
       this.request.post("/user/del/batch", ids).then(res => {
         if (res.data) {
           this.$message.success("Batch delete successfully!")
@@ -205,7 +207,7 @@ export default {
       this.load()
     },
     exportExcel() {
-      window.open("http://localhost:9090/user/export")
+      window.open(`http://${serverIp}:9090/user/export`)
     }
   }
 }
