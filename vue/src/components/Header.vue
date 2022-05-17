@@ -32,6 +32,7 @@ export default {
   name: "Header",
   props: {
     collapseBtnClass: String,
+    user: Object
   },
   // 监听路由变化
   computed: {
@@ -41,7 +42,6 @@ export default {
   },
   data() {
     return {
-      user: localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : {}
     }
   },
   methods: {

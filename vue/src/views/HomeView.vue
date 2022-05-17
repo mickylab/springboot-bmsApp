@@ -9,12 +9,12 @@
 
       <el-container>
         <el-header style="border-bottom: 1px solid #ccc">
-          <Header :collapseBtnClass="collapseBtnClass" :collapse="collapse"/>
+          <Header :collapseBtnClass="collapseBtnClass" :collapse="collapse" :user="user"/>
         </el-header>
 
         <el-main>
           <!--表示当前页面的子路会在router-view里面展示-->
-          <router-view/>
+          <router-view @refreshUser="getUser"/>
         </el-main>
       </el-container>
     </el-container>
@@ -35,7 +35,12 @@ export default {
       isCollapse: false,
       sideWidth: 200,
       logoTextShow: true,
+      user: {},
     }
+  },
+  created() {
+    // 从后台获取最新的数据
+    this.getUser()
   },
   methods: {
     // 点击收缩按钮触发
@@ -50,6 +55,14 @@ export default {
         this.collapseBtnClass = 'el-icon-s-fold';
         this.logoTextShow = true
       }
+    },
+    getUser() {
+      let username = JSON.parse(localStorage.getItem("user")) ? JSON.parse(localStorage.getItem("user")).username : ""
+      // 从后台获取User数据
+      this.request.get("/user/username/" + username).then(res => {
+        // 重新赋值后台最新的 User 对象
+        this.user = res.data
+      })
     }
   }
 }
