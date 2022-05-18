@@ -10,12 +10,12 @@
       <img src="../assets/logo.png" alt="" style="width: 20px; position: relative; top: 5px; margin-right: 5px">
       <b style="color: white" v-show="logoTextShow">Backstage Management System</b>
     </div>
-    <el-menu-item index="/">
-      <template slot="title">
+
+    <el-menu-item index="/home">
         <i class="el-icon-message"></i>
         <span slot="title">Homepage</span>
-      </template>
     </el-menu-item>
+
     <el-submenu index="3">
       <template slot="title">
         <i class="el-icon-setting"></i>
@@ -23,18 +23,21 @@
       </template>
       <el-menu-item index="/user">
         <i class="el-icon-s-custom"></i>
-        <template slot="title">User Setting</template>
+        <span slot="title">User Setting</span>
+      </el-menu-item>
+      <el-menu-item index="/role">
+        <i class="el-icon-s-custom"></i>
+        <span slot="title">Role Setting</span>
       </el-menu-item>
       <el-menu-item index="/file">
         <i class="el-icon-document"></i>
-        <template slot="title">File Setting</template>
+        <span slot="title">File Setting</span>
       </el-menu-item>
     </el-submenu>
+
     <el-menu-item index="/im">
-      <template slot="title">
         <i class="el-icon-chat-dot-round"></i>
         <span slot="title">Chatting Room</span>
-      </template>
     </el-menu-item>
   </el-menu>
 </template>
