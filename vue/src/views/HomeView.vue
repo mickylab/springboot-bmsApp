@@ -9,7 +9,7 @@
 
       <el-container>
         <el-header style="border-bottom: 1px solid #ccc">
-          <Header :collapseBtnClass="collapseBtnClass" :collapse="collapse" :user="user"/>
+          <Header :collapseBtnClass="collapseBtnClass" @asideCollapse="collapse" :user="user"/>
         </el-header>
 
         <el-main>
@@ -58,11 +58,13 @@ export default {
     },
     getUser() {
       let username = JSON.parse(localStorage.getItem("user")) ? JSON.parse(localStorage.getItem("user")).username : ""
-      // 从后台获取User数据
-      this.request.get("/user/username/" + username).then(res => {
-        // 重新赋值后台最新的 User 对象
-        this.user = res.data
-      })
+      if (username) {
+        // 从后台获取User数据
+        this.request.get("/user/username/" + username).then(res => {
+          // 重新赋值后台最新的 User 对象
+          this.user = res.data
+        })
+      }
     }
   }
 }
