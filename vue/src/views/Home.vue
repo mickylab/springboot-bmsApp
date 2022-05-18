@@ -1,6 +1,39 @@
 <template>
   <div>
-    <h1>Welcome to Homepage!</h1>
+    <el-row :gutter="10" style="margin-bottom: 60px">
+      <el-col :span="6">
+        <el-card>
+          <div style="color: #409EFF"><i class="el-icon-user-solid"/> Number of Users</div>
+          <div  style="padding: 10px 0; text-align: center; font-weight: bold">
+            10
+          </div>
+        </el-card>
+      </el-col>
+      <el-col :span="6">
+        <el-card>
+          <div style="color: #F56C6C"><i class="el-icon-shopping-bag-2"/> Total Sales</div>
+          <div  style="padding: 10px 0; text-align: center; font-weight: bold">
+            $10,000
+          </div>
+        </el-card>
+      </el-col>
+      <el-col :span="6">
+        <el-card>
+          <div style="color: #67C23A"><i class="el-icon-money"/> Total Revenue</div>
+          <div  style="padding: 10px 0; text-align: center; font-weight: bold">
+            $3,000
+          </div>
+        </el-card>
+      </el-col>
+      <el-col :span="6">
+        <el-card>
+          <div style="color: #E6A23C"><i class="el-icon-s-shop"/> Number of Stores</div>
+          <div  style="padding: 10px 0; text-align: center; font-weight: bold">
+            3
+          </div>
+        </el-card>
+      </el-col>
+    </el-row>
     <el-row>
       <el-col :span="12">
         <div id="line" style="width: 500px; height: 400px"></div>
