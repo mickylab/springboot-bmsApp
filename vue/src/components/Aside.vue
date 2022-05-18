@@ -48,6 +48,12 @@
         <template slot="title">File Setting</template>
       </el-menu-item>
     </el-submenu>
+    <el-menu-item index="/im">
+      <template slot="title">
+        <i class="el-icon-chat-dot-round"></i>
+        <span slot="title">Chatting Room</span>
+      </template>
+    </el-menu-item>
   </el-menu>
 </template>
 
