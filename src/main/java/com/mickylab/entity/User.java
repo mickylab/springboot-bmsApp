@@ -32,5 +32,6 @@ public class User {
     private String avatarUrl;
     // 数据库别名 @TableField(value = "")
     // mybatis-plus自动包含驼峰转换
+    private String role;
 
 }

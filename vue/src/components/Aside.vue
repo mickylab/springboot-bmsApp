@@ -1,5 +1,5 @@
 <template>
-  <el-menu :default-openeds="['1', '3']" style="min-height: 100%; overflow-x: hidden"
+  <el-menu :default-openeds="opens" style="min-height: 100%; overflow-x: hidden"
            background-color="rgb(48, 65, 86)" text-color="#fff"
            active-text-color="#ffd04b"
            :collapse-transition="false"
@@ -8,37 +8,31 @@
   >
     <div style="height: 60px; line-height: 60px; text-align: center">
       <img src="../assets/logo.png" alt="" style="width: 20px; position: relative; top: 5px; margin-right: 5px">
-      <b style="color: white" v-show="logoTextShow">Backstage Management System</b>
+      <b style="color: white" v-show="logoTextShow">Backstage</b>
     </div>
 
-    <el-menu-item index="/home">
-        <i class="el-icon-message"></i>
-        <span slot="title">Homepage</span>
-    </el-menu-item>
-
-    <el-submenu index="3">
-      <template slot="title">
-        <i class="el-icon-setting"></i>
-        <span slot="title">Setting</span>
-      </template>
-      <el-menu-item index="/user">
-        <i class="el-icon-s-custom"></i>
-        <span slot="title">User Setting</span>
-      </el-menu-item>
-      <el-menu-item index="/role">
-        <i class="el-icon-s-custom"></i>
-        <span slot="title">Role Setting</span>
-      </el-menu-item>
-      <el-menu-item index="/file">
-        <i class="el-icon-document"></i>
-        <span slot="title">File Setting</span>
-      </el-menu-item>
-    </el-submenu>
-
-    <el-menu-item index="/im">
-        <i class="el-icon-chat-dot-round"></i>
-        <span slot="title">Chatting Room</span>
-    </el-menu-item>
+    <div v-for="item in menus" :key="item.id">
+      <div v-if="item.path">
+        <el-menu-item :index="item.path">
+          <i :class="item.icon"></i>
+          <span slot="title">{{ item.name }}</span>
+        </el-menu-item>
+      </div>
+      <div v-else>
+        <el-submenu :index="item.id + ''">
+          <template slot="title">
+            <i :class="item.icon"></i>
+            <span slot="title">{{ item.name }}</span>
+          </template>
+          <div  v-for="subItem in item.children" :key="subItem.id">
+            <el-menu-item :index="subItem.path">
+              <i :class="subItem.icon"></i>
+              <span slot="title">{{ subItem.name }}</span>
+            </el-menu-item>
+          </div>
+        </el-submenu>
+      </div>
+    </div>
   </el-menu>
 </template>
 
@@ -49,10 +43,19 @@ export default {
     isCollapse: Boolean,
     logoTextShow: Boolean,
   },
+  data() {
+    return {
+      menus: localStorage.getItem("menus") ? JSON.parse(localStorage.getItem("menus")) : [],
+      opens: localStorage.getItem("menus") ? JSON.parse(localStorage.getItem("menus")).map(v => v.id + '') : []
+    }
+  },
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+/*解决收缩菜单文字不消失问题*/
+.el-menu--collapse span {
+  visibility: hidden;
+}
 </style>

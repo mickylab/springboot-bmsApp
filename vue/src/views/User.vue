@@ -33,6 +33,8 @@
       </el-table-column>
       <el-table-column prop="username" label="Username" width="120">
       </el-table-column>
+      <el-table-column prop="role" label="Role">
+      </el-table-column>
       <el-table-column prop="nickname" label="Nickname" width="120">
       </el-table-column>
       <el-table-column prop="email" label="Email" width="140">
@@ -77,6 +79,11 @@
         <el-form-item label="Username">
           <el-input v-model="form.username" autocomplete="off"></el-input>
         </el-form-item>
+        <el-form-item label="Role">
+          <el-select clearable v-model="form.role" placeholder="Please choose:" style="width: 100%">
+            <el-option v-for="item in roles" :key="item.name" :label="item.name" :value="item.flag"></el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item label="Nickname">
           <el-input v-model="form.nickname" autocomplete="off"></el-input>
         </el-form-item>
@@ -116,6 +123,7 @@ export default {
       form: {},
       multipleSelection: [],
       headerBackground: 'headerBackground',
+      roles: [],
     }
   },
   created() {
@@ -137,6 +145,10 @@ export default {
       }).then(res => {
         this.tableData = res.data.records;
         this.total = res.data.total;
+      })
+
+      this.request.get("/role").then(res => {
+        this.roles = res.data;
       })
     },
     // 保存提交的表单数据
