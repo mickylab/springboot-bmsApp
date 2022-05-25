@@ -49,8 +49,7 @@ export default {
       this.$emit("asideCollapse")
     },
     logout() {
-      this.$router.push("/login")
-      localStorage.removeItem("user")
+      this.$store.commit("logout")
       this.$message.success("Log out successfully")
     }
   }

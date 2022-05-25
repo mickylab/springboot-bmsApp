@@ -28,9 +28,11 @@
       </el-table-column>
       <el-table-column prop="name" label="Menu name" width="120">
       </el-table-column>
-      <el-table-column prop="path" label="Path" width="150">
+      <el-table-column prop="path" label="Path" width="120">
       </el-table-column>
-      <el-table-column label="Icon" align="center" width="80">
+      <el-table-column prop="pagePath" label="Page path" width="120">
+      </el-table-column>
+      <el-table-column label="Icon" align="center" width="60">
         <template v-slot="scope">
           <span :class="scope.row.icon" style="font-size: 16px"/>
         </template>
@@ -64,6 +66,9 @@
         </el-form-item>
         <el-form-item label="Path">
           <el-input v-model="form.path" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="Page path">
+          <el-input v-model="form.pagePath" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="Icon">
           <el-select clearable v-model="form.icon" placeholder="Please choose:" style="width: 100%">

@@ -247,6 +247,7 @@ export default {
         this.ids.forEach(id => {
           if (!this.checks.includes(id)) {
             // 可能会报错：Uncaught (in promise) TypeError: Cannot read properties of undefined (reading 'setChecked')
+            // 解决可以先显示菜单,也可以用nextTick等待一会再执行
             this.$nextTick(() => {
               this.$refs.tree.setChecked(id, false)
             })
